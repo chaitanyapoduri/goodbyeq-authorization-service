@@ -27,6 +27,7 @@ import com.goodbyeq.user.service.api.GBQUserService;
  * information at run time
  *
  */
+ 
 @Service("userDetailsService")
 @Transactional(propagation = Propagation.SUPPORTS)
 public class GBQUserDetailsServiceImpl implements UserDetailsService {
