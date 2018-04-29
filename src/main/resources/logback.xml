@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="3 seconds">
+
+    <!-- This will be filterd at compile-time -->
+    <contextName>${project.artifactId}</contextName>
+
+    <!-- Simple console appender (server log) -->
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>%d{MMM dd yyyy HH:mm:ss.SSS} ${HOSTNAME} %C %M %X%n%p: [%t] %m%n%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="ops-log" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${catalina.home}/logs/application.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${catalina.home}/logs/application.%d{yyyy-MM-dd}.%i.gz</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>100MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <maxHistory>5</maxHistory>
+        </rollingPolicy>
+
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>%d{MMM dd yyyy HH:mm:ss.SSS} ${HOSTNAME} %contextName %C %M %X%n%p: [%t] %m%n%n</pattern>
+        </encoder>
+
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+    </appender>
+    
+    <root level="DEBUG">
+        <appender-ref ref="console" />
+        <appender-ref ref="ops-log" />
+    </root>
+    
+</configuration>
